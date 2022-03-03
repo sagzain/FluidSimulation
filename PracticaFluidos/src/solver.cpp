@@ -17,6 +17,13 @@ free/clear/allocate simulation data
 void Solver::FreeData(void)
 {
 //TODO: Libera los buffers de memoria.
+	free(u);
+	free(v);
+	free(dens);
+
+	free(u_prev);
+	free(v_prev);
+	free(dens_prev);
 }
 
 void Solver::ClearData(void)
@@ -29,8 +36,25 @@ bool Solver::AllocateData(void)
 //TODO:
 //Reservamos memoria, en caso de fallo devolvemos false.
 //Antes de devolver true, hay que limpiar la memoria reservada con un ClearData().
+	int size = (N + 2) * (N + 2);
 	
-	return true;
+	try
+	{
+		u = (float*)malloc(size * sizeof(float));
+		v = (float*)malloc(size * sizeof(float));
+		dens = (float*)malloc(size * sizeof(float));
+
+		u_prev = (float*)malloc(size * sizeof(float));
+		v_prev = (float*)malloc(size * sizeof(float));
+		dens_prev = (float*)malloc(size * sizeof(float));
+
+		return true;
+	}
+	catch(std::exception& e)
+	{
+		std::cout << "Error allocating data: " << & e << std::endl;
+		return false;
+	}
 }
 
 void Solver::ClearPrevData() 
