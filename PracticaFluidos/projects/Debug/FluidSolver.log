@@ -1,0 +1,4 @@
+﻿  solver.cpp
+C:\Users\samu_\Desktop\PracticaFluidos\src\solver.cpp(137,2): warning C4018: '<=': no coinciden signed/unsigned
+C:\Users\samu_\Desktop\PracticaFluidos\src\solver.cpp(147,2): warning C4018: '<=': no coinciden signed/unsigned
+  FluidSolver.vcxproj -> C:\Users\samu_\Desktop\PracticaFluidos\Debug\FluidSolver.exe
