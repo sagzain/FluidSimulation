@@ -28,7 +28,7 @@ void Solver::FreeData(void)
 
 void Solver::ClearData(void)
 {
-	std::cout << "Clear Data" << std::endl;
+	std::cout << "Clear Data\n";
 
 //TODO: Borra todo el contenido de los buffers
 	int i, j;
@@ -84,12 +84,17 @@ void Solver::ClearPrevData()
 
 void Solver::AddDensity(unsigned x, unsigned y, float source)
 {
+	std::cout << "Add Density\n";
 //TODO: Añade el valor de source al array de densidades. Sería interesante usar la macro: XY_TO_ARRAY
+	dens_prev[XY_TO_ARRAY(x, y)] = source;
 }
 
 void Solver::AddVelocity(unsigned x, unsigned y, float forceX, float forceY)
 {
 //TODO: Añade el valor de fuerza a sus respectivos arrays. Sería interesante usar la macro: XY_TO_ARRAY
+	std::cout << "Add Velocity\n";
+	u_prev[XY_TO_ARRAY(x, y)] = forceX;
+	v_prev[XY_TO_ARRAY(x, y)] = forceY;
 }
 
 void Solver::Solve()
