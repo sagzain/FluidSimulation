@@ -9,8 +9,6 @@ using namespace std;
 #define END_FOR }}
 #define SWAP(x0,x) {float * tmp=x0;x0=x;x=tmp;}
 
-
-
 class Solver
 {
 	float dt, diff, visc;

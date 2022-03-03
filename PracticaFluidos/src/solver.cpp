@@ -28,19 +28,17 @@ void Solver::FreeData(void)
 
 void Solver::ClearData(void)
 {
-	std::cout << "Clear Data\n";
-
 //TODO: Borra todo el contenido de los buffers
 	int i, j;
 
 	FOR_EACH_CELL
-		u[XY_TO_ARRAY(i, j)] = 0;
-		v[XY_TO_ARRAY(i, j)] = 0;
-		dens[XY_TO_ARRAY(i, j)] = 0;
+		u[XY_TO_ARRAY(i, j)] = .0f;
+		v[XY_TO_ARRAY(i, j)] = .0f;
+		dens[XY_TO_ARRAY(i, j)] = .0f;
 
-		u_prev[XY_TO_ARRAY(i, j)] = 0;
-		v_prev[XY_TO_ARRAY(i, j)] = 0;
-		dens_prev[XY_TO_ARRAY(i, j)] = 0;
+		u_prev[XY_TO_ARRAY(i, j)] = .0f;
+		v_prev[XY_TO_ARRAY(i, j)] = .0f;
+		dens_prev[XY_TO_ARRAY(i, j)] = .0f;
 	END_FOR
 }
 
@@ -65,7 +63,7 @@ bool Solver::AllocateData(void)
 	}
 	catch(std::exception& e)
 	{
-		std::cout << "Error allocating data: " << & e << std::endl;
+		std::cout << "Error allocating data: " << &e << std::endl;
 		return false;
 	}
 }
@@ -76,25 +74,23 @@ void Solver::ClearPrevData()
 	int i, j;
 
 	FOR_EACH_CELL
-		u_prev[XY_TO_ARRAY(i, j)] = 0;
-		v_prev[XY_TO_ARRAY(i, j)] = 0;
-		dens_prev[XY_TO_ARRAY(i, j)] = 0;
+		u_prev[XY_TO_ARRAY(i, j)] = .0f;
+		v_prev[XY_TO_ARRAY(i, j)] = .0f;
+		dens_prev[XY_TO_ARRAY(i, j)] = .0f;
 	END_FOR
 }
 
 void Solver::AddDensity(unsigned x, unsigned y, float source)
 {
-	std::cout << "Add Density\n";
 //TODO: Añade el valor de source al array de densidades. Sería interesante usar la macro: XY_TO_ARRAY
-	dens_prev[XY_TO_ARRAY(x, y)] = source;
+	dens_prev[XY_TO_ARRAY(x, y)] += source;
 }
 
 void Solver::AddVelocity(unsigned x, unsigned y, float forceX, float forceY)
 {
 //TODO: Añade el valor de fuerza a sus respectivos arrays. Sería interesante usar la macro: XY_TO_ARRAY
-	std::cout << "Add Velocity\n";
-	u_prev[XY_TO_ARRAY(x, y)] = forceX;
-	v_prev[XY_TO_ARRAY(x, y)] = forceY;
+	u_prev[XY_TO_ARRAY(x, y)] += forceX;
+	v_prev[XY_TO_ARRAY(x, y)] += forceY;
 }
 
 void Solver::Solve()
@@ -107,7 +103,7 @@ void Solver::DensStep()
 {
 	AddSource(dens, dens_prev);			//Adding input density (dens_prev) to final density (dens).
 	SWAP(dens_prev, dens)				//Swapping matrixes, because we want save the next result in dens, not in dens_prev.
-	Diffuse(0, dens, dens_prev);		//Writing result in dens because we made the swap before. bi = dens_prev. The initial trash in dens matrix, doesnt matter, because it converges anyways.
+	//Diffuse(0, dens, dens_prev);		//Writing result in dens because we made the swap before. bi = dens_prev. The initial trash in dens matrix, doesnt matter, because it converges anyways.
 	//SWAP(dens_prev, dens)				//Swapping matrixes, because we want save the next result in dens, not in dens_prev.
 	//Advect(0, dens, dens_prev, u, v);	//Advect phase, result in dens.
 }
@@ -131,6 +127,11 @@ void Solver::VelStep()
 void Solver::AddSource(float * base, float * source)
 {
 //TODO: Teniendo en cuenta dt (Delta Time), incrementar el array base con nuestro source. Esto sirve tanto para añadir las nuevas densidades como las nuevas fuerzas.
+	int i, j;
+
+	FOR_EACH_CELL
+		base[XY_TO_ARRAY(i, j)] += dt * source[XY_TO_ARRAY(i, j)];
+	END_FOR
 }
 
 
@@ -143,6 +144,7 @@ Input b: 0, 1 or 2.
 	2: y axis borders inverted, x axis equal.
 	Corner values allways are mean value between associated edges.
 */
+
 }
 
 /*
