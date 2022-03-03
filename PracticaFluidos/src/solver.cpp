@@ -28,7 +28,20 @@ void Solver::FreeData(void)
 
 void Solver::ClearData(void)
 {
+	std::cout << "Clear Data" << std::endl;
+
 //TODO: Borra todo el contenido de los buffers
+	int i, j;
+
+	FOR_EACH_CELL
+		u[XY_TO_ARRAY(i, j)] = 0;
+		v[XY_TO_ARRAY(i, j)] = 0;
+		dens[XY_TO_ARRAY(i, j)] = 0;
+
+		u_prev[XY_TO_ARRAY(i, j)] = 0;
+		v_prev[XY_TO_ARRAY(i, j)] = 0;
+		dens_prev[XY_TO_ARRAY(i, j)] = 0;
+	END_FOR
 }
 
 bool Solver::AllocateData(void)
@@ -60,6 +73,13 @@ bool Solver::AllocateData(void)
 void Solver::ClearPrevData() 
 {
 //TODO: Borra el contenido de los buffers _prev
+	int i, j;
+
+	FOR_EACH_CELL
+		u_prev[XY_TO_ARRAY(i, j)] = 0;
+		v_prev[XY_TO_ARRAY(i, j)] = 0;
+		dens_prev[XY_TO_ARRAY(i, j)] = 0;
+	END_FOR
 }
 
 void Solver::AddDensity(unsigned x, unsigned y, float source)
